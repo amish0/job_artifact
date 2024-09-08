@@ -28,3 +28,12 @@ jobs:
       - name: build whl file
         run: python setup.py sdist bdist_wheel
       - run: echo "bye bye ...."
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: start build
+        run: echo "staarting build"
+      - name: get code 
+        uses: actions/checkout@v4
+      - run: echo "deployment jobs"
