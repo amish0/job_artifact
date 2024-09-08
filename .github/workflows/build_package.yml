@@ -45,6 +45,14 @@ jobs:
     steps:
       - name: start build
         run: echo "staarting build"
+      - name: download artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Display the list of file present in dist directory
+        run: ls dist
       - name: get code 
         uses: actions/checkout@v4
       - run: echo "deployment jobs"
