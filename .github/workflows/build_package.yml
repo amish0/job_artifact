@@ -12,12 +12,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      my-artifact: ${{ steps.upload-artifact.outputs }}
-      # build_flage: ${{ steps.start_build_id.outputs }}
+      # my-artifact: ${{ steps.upload-artifact.outputs }}
+      build_flage: ${{ steps.start_build_id.outputs.name }}
     steps:
       - name: start build
         id: start_build_id
-        run: echo "staarting build"
+        run: echo "name=staarting build">> $GITHUB_ENV
       - name: get code 
         uses: actions/checkout@v4
       - name: python action setup
@@ -60,9 +60,8 @@ jobs:
       - name: Display the list of file present in build directory
         run: ls build
       - name: JoB output from build job
-        run: |
-          echo "Job output from build job ${{needs.build.outputs.build_flage}}"
-          echo "Job output from build job ${{needs.build.outputs.my-artifact}}"
+        run: echo "Job output from build job ${{needs.build.outputs.build_flage}}"
+          # echo "Job output from build job ${{needs.build.outputs.my-artifact}}"
       - name: get code 
         uses: actions/checkout@v4
       - run: echo "deployment jobs"
