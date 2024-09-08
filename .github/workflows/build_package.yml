@@ -10,6 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-      setps:
-        - name: basic echo
-          run: echo "initial basic"
+    setps:
+      - name: basic echo
+        run: echo "initial basic"
