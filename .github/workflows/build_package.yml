@@ -11,8 +11,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      my-artifact: ${{ steps.upload-artifact.outputs.artifact }}
+      build_flage: ${{ steps.start_build_id.outputs}}
     steps:
       - name: start build
+        id: start_build_id
         run: echo "staarting build"
       - name: get code 
         uses: actions/checkout@v4
@@ -53,6 +57,12 @@ jobs:
         run: ls -R
       - name: Display the list of file present in dist directory
         run: ls dist
+      - name: Display the list of file present in build directory
+        run: ls build
+      - name: JoB output from build job
+        run: |
+          echo "Job output from build job ${{needs.build.outputs.build_flage}}"
+          echo "Job output from build job ${{needs.build.outputs.my-artifact}}"
       - name: get code 
         uses: actions/checkout@v4
       - run: echo "deployment jobs"
