@@ -34,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-artifact
+          name: my-artifact-${{ github.ref_name }}
           path: |
             dist/*
             build/*
