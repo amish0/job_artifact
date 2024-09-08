@@ -27,6 +27,12 @@ jobs:
       - run: python main.py
       - name: build whl file
         run: python setup.py sdist bdist_wheel
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: dist/*
+          path: build/*
       - run: echo "bye bye ...."
   deploy:
     needs: build
