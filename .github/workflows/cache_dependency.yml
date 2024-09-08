@@ -1,4 +1,4 @@
-name: job_output_test
+name: cache_test
 on: [push]
 jobs:
   Test:
