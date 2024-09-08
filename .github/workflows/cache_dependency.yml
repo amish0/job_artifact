@@ -1,0 +1,83 @@
+name: job_output_test
+on: [push]
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    outputs:
+      build_flage: ${{ steps.test_main.outputs.status }}
+    steps:
+      - name: get code 
+        uses: actions/checkout@v4
+      - name: Cache dependency
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: python action setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+      - name: installing dependency
+        run: |
+          pip install -r requirements.txt
+          pip install wheel
+      - name: run main file
+        id: test_main
+        run: |
+          python main.py
+          echo "status=sucess">> $GITHUB_OUTPUT
+    
+  build:
+    needs: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Status
+        run: echo "Test Status ${{needs.Test.outputs.build_flage}}"
+      - name: get code 
+        uses: actions/checkout@v4
+      - name: Cache dependency
+        id: recache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: python action setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+      - name: installing dependency
+        run: |
+          pip install -r requirements.txt
+          pip install wheel
+      - name: build whl file
+        run: python setup.py sdist bdist_wheel
+      - name: print the running jobs & step
+        run: echo "print the running jobs & step ${{toJson(job)}}"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact-${{ github.ref_name }}
+          path: |
+            dist/*
+            build/*
+      - run: echo "build sucessfull"
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-artifact-${{ github.ref_name}}
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Display the list of file present in dist directory
+        run: ls dist
+      - name: Display the list of file present in build directory
+        run: ls build
