@@ -25,4 +25,4 @@ jobs:
       - run: python main.py
       - name: build whl file
         run: python setup.py sdist bdist_wheel
-      - run: ls /dist
+      - run: echo "bye bye ...."
