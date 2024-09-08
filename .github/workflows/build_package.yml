@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      my-artifact: ${{ steps.upload-artifact.outputs.artifact }}
+      my-artifact: ${{ steps.upload-artifact.outputs }}
       # build_flage: ${{ steps.start_build_id.outputs }}
     steps:
       - name: start build
