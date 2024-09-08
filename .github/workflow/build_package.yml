@@ -1,0 +1,15 @@
+name: build_test
+on:
+  push:
+    branches:
+      - main
+      - dev
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+      setps:
+        - name: basic echo
+          run: echo "initial basic"
